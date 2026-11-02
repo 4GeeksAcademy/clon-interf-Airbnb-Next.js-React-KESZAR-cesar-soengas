@@ -100,6 +100,78 @@ Cada alojamiento necesitará un identificador estable, tipo, título, destino, f
 - Conectar Home, catálogo y detalle mediante navegación del App Router con `Link` de Next.js y navegación de cliente para formularios, sin recargar el documento completo.
 - Conservar los criterios de búsqueda al consultar un alojamiento y regresar al catálogo. Las rutas propuestas son `/`, `/search` y `/rooms/[id]`.
 
+<!--
+ESPECIFICACIÓN DE COMPONENTES
+Referencia: las tres capturas de public/img-Airbnb.
+Formato: Componente | props propuestas | ubicación y responsabilidad.
+Los callbacks comunican acciones; no implican backend ni nuevas features.
+
+COMPARTIDOS
+SiteHeader | variant, navigation, search, actions | Cabecera superior; compone marca y slots, sin gestionar búsquedas.
+CategoryNav | items, activeId, onSelect | Slot navigation; presenta las categorías y comunica selección.
+UserMenu | onProfileClick, onMenuClick | Slot actions; presenta los accesos, sin autenticar usuarios.
+SearchBar | variant, value, onChange, onSubmit | Slot search; coordina campos y envío, sin filtrar alojamientos.
+DestinationField | value, onChange | Dentro de SearchBar; selecciona el destino.
+DateField | value, onChange | Dentro de SearchBar; selecciona el intervalo de fechas.
+GuestField | value, onChange, min, max | Dentro de SearchBar; selecciona la cantidad de huéspedes.
+ListingCard | listing, variant, detailHref, isFavorite, onFavoriteChange | Dentro de carrusel o grid; compone el resumen enlazable.
+FavoriteButton | pressed, onToggle, label | Sobre la foto o dentro de ListingActions; comunica la acción, sin persistir datos.
+GuestFavoriteBadge | label | Sobre la foto o dentro de GuestRatingPanel; muestra el distintivo.
+PriceSummary | amount, currency, basis, nights | Dentro de tarjeta o panel; formatea un precio ya calculado.
+RatingSummary | value, reviewCount | Dentro de tarjeta o panel; presenta puntuación y cantidad de evaluaciones.
+RoomFacts | bedrooms, beds, bathrooms | Dentro de ListingCard o debajo de ListingOverview; presenta la distribución.
+FeesNotice | message | Junto al encabezado del catálogo o encima del panel de precio; informa sobre tarifas.
+
+HOME
+ListingSection | title, href, children | Dentro de main; agrupa el encabezado del destino y su colección.
+ListingCarousel | children, label | Dentro de ListingSection; gestiona desplazamiento horizontal y controles.
+Composición: SiteHeader + main > ListingSection repetida > ListingCarousel > ListingCard.
+Cabecera: marca a la izquierda, CategoryNav centrada y UserMenu a la derecha.
+SearchBar expandida ocupa una segunda fila; cada tarjeta compone foto, distintivo, favorito, precio y valoración.
+
+CATÁLOGO
+FilterBar | children | Debajo de SiteHeader; organiza los controles, sin aplicar filtros.
+FilterControl | label, kind, value, options, onChange | Dentro de FilterBar; edita un único criterio.
+ResultsHeading | destination, count, isApproximate | Encima del grid; presenta destino y cantidad recibida.
+ListingGrid | children | Columna de resultados; distribuye tarjetas, sin consultar ni filtrar datos.
+ListingImageCarousel | photos, label | Zona visual de ListingCard de resultados; gestiona foto activa e indicadores.
+CancellationBadge | label | Debajo del precio de ListingCard; muestra una condición recibida.
+ResultsMap | markers, selectedId, onSelect | Columna derecha del catálogo; presenta ubicaciones y controla la cámara.
+MapPriceMarker | position, amount, currency, selected, onSelect | Dentro de ResultsMap; muestra un precio seleccionable.
+Composición: SiteHeader compacto + FilterBar + main con resultados a la izquierda y ResultsMap a la derecha.
+Resultados: ResultsHeading y FeesNotice sobre ListingGrid > ListingCard.
+La tarjeta compone ListingImageCarousel, distintivos, favorito, valoración, RoomFacts y PriceSummary.
+
+DETALLE
+ListingTitle | title | Primera fila de main, a la izquierda; presenta el título.
+ListingActions | children | Primera fila de main, a la derecha; agrupa acciones.
+ShareButton | onShare, label | Dentro de ListingActions; comunica la intención de compartir.
+PhotoGallery | photos, onOpenAll | Debajo del título y acciones; compone imágenes y acceso a la colección completa.
+ListingOverview | accommodationType, location, guestCapacity | Debajo de la galería, columna izquierda; presenta datos generales.
+GuestRatingPanel | rating, reviewCount, isGuestFavorite, description | Debajo del resumen; compone distintivo y RatingSummary.
+StayPricePanel | amount, currency, basis, nights | Debajo de FeesNotice, columna derecha; compone el resumen de precio, sin reservas.
+Composición: SiteHeader compacto + main > fila de título/acciones + PhotoGallery + dos columnas.
+Columna izquierda: ListingOverview, RoomFacts y GuestRatingPanel.
+Columna derecha: FeesNotice y StayPricePanel.
+PhotoGallery de escritorio: imagen principal y cuatro secundarias; un modal sería otro componente, pendiente de solicitud.
+
+CONTRATOS Y LÍMITES
+listing contiene datos de presentación; photos contiene imágenes con src y alt; markers incluye id, posición y precio.
+Los slots navigation, search, actions y children reciben contenido React; variant selecciona una presentación, no una lógica de negocio distinta.
+SearchBar.value agrupa destino, fechas y huéspedes; los campos reciben únicamente su valor correspondiente.
+basis distingue precio por noche de total por estancia; nights indica la duración cuando corresponda.
+Las páginas coordinan datos y navegación; filtros y cálculos pertenecen a funciones independientes de la UI.
+Los callbacks se conectarán dentro de límites Client Component, no como funciones ordinarias desde Server Components.
+En ListingCard, los botones de favorito y carrusel quedan fuera del enlace de navegación.
+Estos contratos son una propuesta previa; sus tipos concretos se definirán en /types al implementar la feature correspondiente.
+
+RESPONSIVE Y ALCANCE
+Base 375px: contenido apilado, controles accesibles y desplazamiento limitado a carruseles.
+Desde 768px: ampliar columnas según espacio; el mapa lateral no debe comprimir los resultados.
+Estas adaptaciones móviles son propuestas; las capturas solo muestran escritorio.
+Mapa, filtros avanzados, fechas y acciones adicionales requieren autorización por feature.
+-->
+
 ## Forma de trabajo
 
 Este mini-brief se crea antes del código de la aplicación. La implementación avanzará feature por feature, solo siguiendo las indicaciones del usuario. Al entregar cada feature se proporcionará un ejemplo de mensaje de commit; el usuario realizará los commits y las subidas al repositorio.
