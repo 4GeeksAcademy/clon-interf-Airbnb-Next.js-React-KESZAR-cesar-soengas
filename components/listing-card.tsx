@@ -1,3 +1,4 @@
+import Link from "next/link";
 import type { Listing } from "@/types/listing";
 
 type ListingCardProps = {
@@ -6,20 +7,37 @@ type ListingCardProps = {
 
 export function ListingCard({ listing }: ListingCardProps) {
   return (
-    <article className="min-w-0">
-      <div
-        role="img"
-        aria-label={`Imagen ilustrativa: ${listing.title}`}
-        className={`relative aspect-square overflow-hidden rounded-xl ${photoTones[listing.photoTone]}`}
-      >
+    <article className="relative min-w-0">
+      <Link href={`/rooms/${listing.id}`} className="group block rounded-xl focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-neutral-900">
         <div
-          aria-hidden="true"
-          className="absolute inset-0 opacity-40 [background-image:radial-gradient(circle_at_25%_30%,white_0,transparent_35%),linear-gradient(145deg,transparent_50%,rgba(0,0,0,.2))]"
-        />
+          role="img"
+          aria-label={`Imagen ilustrativa: ${listing.title}`}
+          className={`relative aspect-square overflow-hidden rounded-xl ${photoTones[listing.photoTone]}`}
+        >
+          <div
+            aria-hidden="true"
+            className="absolute inset-0 opacity-40 [background-image:radial-gradient(circle_at_25%_30%,white_0,transparent_35%),linear-gradient(145deg,transparent_50%,rgba(0,0,0,.2))]"
+          />
+        </div>
+        <div className="mt-3 flex items-start justify-between gap-2">
+          <h2 className="truncate text-sm font-semibold text-neutral-900 group-hover:underline">
+            {listing.title}
+          </h2>
+          <p className="flex shrink-0 items-center gap-1 text-sm text-neutral-800">
+            <span aria-hidden="true" className="text-xs">★</span>
+            {listing.rating.toFixed(2)}
+          </p>
+        </div>
+        <p className="mt-1 truncate text-sm text-neutral-500">{listing.location}</p>
+        <p className="mt-2 text-sm text-neutral-900">
+          <span className="font-semibold">${listing.nightlyPrice}</span> por noche
+        </p>
+      </Link>
+      <div className="pointer-events-none absolute left-0 right-0 top-0 aspect-square">
         <button
           type="button"
           aria-label={`Guardar ${listing.title} en favoritos`}
-          className="absolute right-3 top-3 grid h-9 w-9 place-items-center rounded-full text-white drop-shadow-[0_1px_2px_rgba(0,0,0,.8)] transition hover:scale-110"
+          className="pointer-events-auto absolute right-3 top-3 grid h-9 w-9 place-items-center rounded-full text-white drop-shadow-[0_1px_2px_rgba(0,0,0,.8)] transition hover:scale-110"
         >
           <svg
             aria-hidden="true"
@@ -31,19 +49,6 @@ export function ListingCard({ listing }: ListingCardProps) {
           </svg>
         </button>
       </div>
-      <div className="mt-3 flex items-start justify-between gap-2">
-        <h2 className="truncate text-sm font-semibold text-neutral-900">
-          {listing.title}
-        </h2>
-        <p className="flex shrink-0 items-center gap-1 text-sm text-neutral-800">
-          <span aria-hidden="true" className="text-xs">★</span>
-          {listing.rating.toFixed(2)}
-        </p>
-      </div>
-      <p className="mt-1 truncate text-sm text-neutral-500">{listing.location}</p>
-      <p className="mt-2 text-sm text-neutral-900">
-        <span className="font-semibold">${listing.nightlyPrice}</span> por noche
-      </p>
     </article>
   );
 }

@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
 import { useParams } from "next/navigation";
 import { RoomAmenities } from "@/components/room-amenities";
 import { RoomBookingCard } from "@/components/room-booking-card";
@@ -45,6 +46,12 @@ export default function RoomDetailPage() {
   return (
     <main className="min-h-screen bg-white text-neutral-900">
       <SiteNavbar searchText="" onSearchTextChange={() => {}} />
+
+      <nav aria-label="Ruta de navegación" className="mx-auto max-w-6xl px-5 pt-5 md:px-8">
+        <Link href="/catalog" className="text-sm font-medium text-neutral-700 underline underline-offset-4 hover:text-neutral-950">
+          ← Volver al catálogo
+        </Link>
+      </nav>
 
       {isLoading ? (
         <div role="status" className="flex min-h-96 items-center justify-center gap-3 text-sm text-neutral-600">
