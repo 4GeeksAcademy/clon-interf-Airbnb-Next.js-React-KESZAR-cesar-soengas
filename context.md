@@ -16,6 +16,17 @@ Las siguientes capturas de Airbnb.com proporcionadas por el usuario son la refer
 
 Las tres imágenes muestran escritorio y solo la parte visible de cada página. No permiten confirmar el comportamiento de menús, modales ni secciones fuera de la captura. La adaptación móvil descrita más abajo es una propuesta, no una observación de estas imágenes.
 
+## Estado de la implementación
+
+Esta sección registra lo que existe actualmente en el prototipo; las tablas y especificaciones posteriores describen la referencia visual y una arquitectura propuesta, no funcionalidades ya implementadas.
+
+- Rutas actuales: `/` (Home), `/catalog` (catálogo) y `/rooms/[id]` (detalle).
+- Los datos de ejemplo se comparten desde `lib/listings.ts`; el catálogo ordena por precio y muestra un placeholder de mapa.
+- Home ofrece búsqueda local por título o ubicación y filtro por categoría.
+- El detalle carga datos locales con una espera simulada. La galería usa placeholders visuales; los controles cambian el índice mostrado, no cargan fotografías distintas. Los datos de anfitrión, reseñas y capacidad son demostrativos.
+- El contador de huéspedes es interactivo dentro del límite configurado. El botón «Reservar» no inicia una reserva; no hay fechas, pagos, backend ni mapa interactivo.
+- Componentes reutilizables actuales en `components/`: `SiteNavbar`, `CategoryFilter`, `ListingCard`, `MapPlaceholder`, `RoomPhotoGallery`, `RoomHost`, `RoomAmenities` y `RoomBookingCard`. `SiteNavbar` también contiene auxiliares visuales (`AirbnbMark`, `SearchIcon` y `UserMenu`).
+
 ## Usuario y objetivo
 
 La plataforma está dirigida a una persona que organiza un viaje y necesita encontrar un alojamiento adecuado a su destino, compañía y presupuesto. Quiere explorar opciones, comparar fotos, ubicación, capacidad, precios y valoraciones, y consultar el detalle de una habitación o vivienda antes de decidir dónde hospedarse. En este prototipo podrá recorrer ese proceso de búsqueda y comparación, sin efectuar una reserva real.
@@ -98,7 +109,7 @@ Cada alojamiento necesitará un identificador estable, tipo, título, destino, f
 - Adaptar el diseño desde 768px, aumentando columnas según el espacio disponible. Si se solicita el mapa, decidir su presentación móvil por separado y reservar la disposición lateral para anchuras suficientes.
 - Mantener etiquetas accesibles, foco visible, contraste legible y textos alternativos para las imágenes.
 - Conectar Home, catálogo y detalle mediante navegación del App Router con `Link` de Next.js y navegación de cliente para formularios, sin recargar el documento completo.
-- Conservar los criterios de búsqueda al consultar un alojamiento y regresar al catálogo. Las rutas propuestas son `/`, `/search` y `/rooms/[id]`.
+- La navegación implementada usa `Link` de Next.js entre `/`, `/catalog` y `/rooms/[id]`. La página de detalle incluye un enlace para regresar a `/catalog`. La conservación de los criterios de búsqueda al navegar todavía no está implementada.
 
 <!--
 ESPECIFICACIÓN DE COMPONENTES
